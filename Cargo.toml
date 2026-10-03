@@ -1,0 +1,48 @@
+[package]
+name = "satellite_telemetry_engine"
+version = "0.1.0"
+edition = "2021"
+authors = ["Leo Hawking <leo.hawking@example.com>"]
+description = "High-performance, memory-safe satellite telemetry and remote sensing processing engine with orbital mechanics propagation and a deep-learning tensor ingestion bridge."
+license = "MIT OR Apache-2.0"
+repository = "https://github.com/leohawking/satellite-telemetry-engine"
+readme = "README.md"
+keywords = ["aerospace", "satellite", "telemetry", "orbital-mechanics", "remote-sensing"]
+categories = ["aerospace", "science", "simulation"]
+
+[dependencies]
+# Linear algebra / matrix & vector math for orbital mechanics
+nalgebra = { version = "0.32", features = ["serde-serialize"] }
+
+# N-dimensional tensor arrays for the deep-learning ingestion bridge
+ndarray = { version = "0.15", features = ["serde"] }
+
+# Async runtime for non-blocking telemetry I/O streams
+tokio = { version = "1", features = ["full"] }
+tokio-stream = "0.1"
+futures = "0.3"
+
+# Explicit, ergonomic error handling
+thiserror = "1.0"
+anyhow = "1.0"
+
+# Telemetry packet (de)serialization
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+
+# Structured logging/tracing for embedded and ground-station diagnostics
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", features = ["env-filter"] }
+
+# High-precision time handling for epoch/state-vector timestamps
+chrono = { version = "0.4", features = ["serde"] }
+
+[profile.release]
+opt-level = 3
+lto = "fat"
+codegen-units = 1
+panic = "abort"
+strip = true
+
+[profile.dev]
+opt-level = 1
